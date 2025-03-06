@@ -1,0 +1,40 @@
+name: Upload Terraform Template to S3
+on:
+  workflow_dispatch:
+    inputs:
+      folder:
+        description: 'Choose Terraform product (EC2,VPC..etc)'
+        required: true
+        type: choice
+        options:
+          - ec2-product
+          - vpc-product
+permissions:
+   contents: write
+   id-token: write
+   
+jobs:
+  package-and-upload:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: 'us-east-1'  
+      AWS_S3_BUCKET: 'servicecatalogterraform'  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create tar.gz archive
+        run: |
+          cd ${{ github.event.inputs.folder }}
+          tar -czvf ../${{ github.event.inputs.folder }}.tar.gz .
+          
+      - name: AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::686255946921:role/github-OIDC
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp ${{ github.event.inputs.folder }}.tar.gz s3://$AWS_S3_BUCKET/
+        
