@@ -31,9 +31,8 @@ jobs:
       - name: AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::686255946921:role/github-OIDC
+          ole-to-assume: arn:aws:iam::180294181827:role/github-actions-OIDC
           aws-region: ${{ env.AWS_REGION }}
-
       - name: Upload to S3
         run: |
           aws s3 cp ${{ github.event.inputs.folder }}.tar.gz s3://$AWS_S3_BUCKET/
