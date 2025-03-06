@@ -31,7 +31,7 @@ jobs:
       - name: AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          ole-to-assume: arn:aws:iam::180294181827:role/github-actions-OIDC
+          role-to-assume: arn:aws:iam::180294181827:role/github-actions-OIDC
           aws-region: ${{ env.AWS_REGION }}
       - name: Upload to S3
         run: |
