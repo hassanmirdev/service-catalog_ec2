@@ -1,23 +1,18 @@
-# modules/vpc/main.tf
-
-resource "aws_vpc" "main" {
-  cidr_block = var.cidr_block
-  enable_dns_support = true
-  enable_dns_hostnames = true
-
+resource "aws_vpc" "scvpc" {
+  cidr_block = var.vpc_cidr
   tags = {
     Name = var.vpc_name
   }
 }
 
-resource "aws_subnet" "subnet_1" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.subnet_cidr_block
-  availability_zone       = var.availability_zone
-  map_public_ip_on_launch = var.map_public_ip_on_launch
+resource "aws_subnet" "public" {
+  count = length(var.public_subnets)
+  vpc_id            = aws_vpc.scvpc.id
+  cidr_block        = var.public_subnets[count.index]
+  map_public_ip_on_launch = true
+  availability_zone = element(var.azs, count.index)
 
   tags = {
-    Name = var.subnet_name
+    Name = "${var.vpc_name}-public-${count.index}"
   }
 }
-
