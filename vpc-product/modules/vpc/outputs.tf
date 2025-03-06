@@ -1,20 +1,9 @@
-variable "vpc_name" {
-  description = "Name of the VPC"
-  type        = string
+output "vpc_id" {
+  description = "The ID of the VPC"
+  value       = aws_vpc.scvpc.id
 }
 
-variable "vpc_cidr" {
-  description = "CIDR block for the VPC"
-  type        = string
+output "public_subnets" {
+  description = "List of public subnet IDs"
+  value       = aws_subnet.public[*].id
 }
-
-variable "public_subnets" {
-  description = "List of public subnet CIDR blocks"
-  type        = list(string)
-}
-
-variable "azs" {
-  description = "List of availability zones"
-  type        = list(string)
-}
-
