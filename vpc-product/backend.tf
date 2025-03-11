@@ -1,4 +1,4 @@
-terraform {
+/* terraform {
 backend "s3" {
         bucket = "nshdemo"
         key = "service-catalog-vpc/terraform.tfstate"
@@ -7,3 +7,4 @@ backend "s3" {
         dynamodb_table = "terraform-lock-table"
         }
 }
+*/
